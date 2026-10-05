@@ -17,7 +17,7 @@ public class Persona {
 
     @Id
     @NotNull(message = "El documento/código no puede estar vacío")
-    @Min(value = 1000, message = "El documento de la persona debe tener más de 3 dígitos (mayor o igual a 1000)")
+    @Min(value = 1, message = "El documento debe ser mayor a 0")
     @Column(name = "id", nullable = false)
     private Integer id;
 

@@ -23,12 +23,8 @@ public class PersonaServiceImpl implements PersonaService {
     }
 
     private void validarCamposComunes(Persona persona) {
-        if (persona.getId() == null) {
+        if (persona.getId() == null || persona.getId() <= 0) {
             throw new BusinessException("El documento de la persona no puede estar vacío");
-        }
-
-        if (String.valueOf(persona.getId()).length() <= 3) {
-            throw new BusinessException("El documento de la persona debe ser mas de 3 digitos");
         }
 
         if (persona.getNombre() == null || persona.getNombre().trim().length() < 5) {
@@ -59,6 +55,10 @@ public class PersonaServiceImpl implements PersonaService {
 
     @Override
     public Persona registrarPersona(Persona persona) {
+        if (persona.getId() == null || String.valueOf(persona.getId()).length() <= 3) {
+            throw new BusinessException("El documento de la persona debe ser mas de 3 digitos");
+        }
+
         validarCamposComunes(persona);
 
         if (personaRepository.existsById(persona.getId())) {
@@ -71,8 +71,8 @@ public class PersonaServiceImpl implements PersonaService {
     @Override
     @Transactional(readOnly = true)
     public Optional<Persona> buscarPersona(Integer id) {
-        if (id == null || String.valueOf(id).length() <= 3) {
-            throw new BusinessException("El documento de la persona debe ser mas de 3 digitos");
+        if (id == null || id <= 0) {
+            throw new BusinessException("El documento ingresado no es válido");
         }
         return personaRepository.findById(id);
     }
